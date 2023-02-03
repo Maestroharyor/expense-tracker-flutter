@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:expensetracker/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
@@ -14,25 +15,43 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+  DateTime _selectedDate = DateTime.utc(1, 1, 2);
 
   void _handleSubmit() {
+    if (amountController.text.isEmpty) {
+      return;
+    }
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (enteredTitle.isEmpty ||
+        enteredAmount <= 0 ||
+        _selectedDate == DateTime.utc(1, 1, 2)) {
       return;
     }
-    widget.addNewTransaction(enteredTitle, enteredAmount);
+    widget.addNewTransaction(enteredTitle, enteredAmount, _selectedDate);
   }
 
   void _presentDatePicker() {
     showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime.now());
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2022),
+            lastDate: DateTime.now())
+        .then((value) => {
+              // print(value),
+              // print(value == DateTime.utc(1, 1, 1))
+
+              if (value != null)
+                {
+                  setState(
+                    () {
+                      _selectedDate = value;
+                    },
+                  )
+                }
+            });
   }
 
   @override
@@ -58,8 +77,11 @@ class _NewTransactionState extends State<NewTransaction> {
             Container(
               height: 70,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("No Date Chosen"),
+                  Text(_selectedDate == DateTime.utc(1, 1, 2)
+                      ? "No Date Chosen"
+                      : 'Selected Date: ${DateFormat.yMd().format(_selectedDate)}'),
                   SizedBox(
                     width: 8,
                   ),

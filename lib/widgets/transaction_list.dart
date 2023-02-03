@@ -62,6 +62,14 @@ class TransactionList extends StatelessWidget {
                         DateFormat.yMMMd().format(transactions[index].date),
                         style: TextStyle(color: Colors.grey),
                       ),
+                      trailing: IconButton(
+                          onPressed: () {
+                            removeATransaction(transactions[index].id);
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          )),
                     ),
                     // // child: Container(
                     //   padding: EdgeInsets.all(10),

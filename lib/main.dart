@@ -38,12 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime selectedDate) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: selectedDate);
 
     setState(() {
       _userTransactions.add(newTransaction);
@@ -51,13 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
-  void _removeATransaction(String title) {
-    final newTransaction =
-        _userTransactions.where((item) => item.title != title).toList();
-    print(newTransaction);
+  void _removeATransaction(String id) {
     setState(() {
-      _userTransactions:
-      newTransaction;
+      _userTransactions.removeWhere((element) => element.id == id);
     });
   }
 
