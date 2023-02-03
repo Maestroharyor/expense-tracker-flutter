@@ -15,7 +15,7 @@ class TransactionList extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(10),
       child: Container(
-        height: 400,
+        height: 500,
         child: transactions.isEmpty
             ? Column(
                 children: [
